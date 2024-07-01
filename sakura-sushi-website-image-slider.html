@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>櫻花壽司店</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff1f1;
+    }
+
+    header {
+      background-color: #ff9999;
+      color: white;
+      text-align: center;
+      padding: 1em;
+    }
+
+    .hero {
+      background-image: url('/api/placeholder/1200/400');
+      background-size: cover;
+      background-position: center;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-content {
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 2em;
+      border-radius: 10px;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2em;
+    }
+
+    .info {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1em;
+      margin-top: 2em;
+    }
+
+    #menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2em;
+      margin-top: 2em;
+    }
+
+    .menu-item {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1em;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1em;
+    }
+
+    footer {
+      background-color: #ff9999;
+      color: white;
+      text-align: center;
+      padding: 1em;
+      margin-top: 2em;
+    }
+
+    /* 圖片輪播樣式 */
+    .slider-container {
+      max-width: 800px;
+      margin: 2em auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slide {
+      min-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.5);
+      border: none;
+      font-size: 24px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .slider-btn:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>櫻花壽司店</h1>
+  </header>
+  <div class="hero">
+    <div class="hero-content">
+      <h2>歡迎來到櫻花壽司店</h2>
+      <p>品嚐最新鮮的日本料理</p>
+    </div>
+  </div>
+  <main>
+    <div class="slider-container">
+      <div class="slider">
+        <!-- 輪播圖片將由 JavaScript 動態添加 -->
+      </div>
+      <button class="slider-btn prev">&lt;</button>
+      <button class="slider-btn next">&gt;</button>
+    </div>
+    <div class="info">
+      <h2>聯絡我們</h2>
+      <p>地址：64A Jalan Dedap 7 Taman Johor Jaya 81100 Johor Bahru</p>
+      <p>電話：018-2777989</p>
+    </div>
+    <h2>我們的菜單</h2>
+    <div id="menu">
+      <!-- 菜單項目將由 JavaScript 動態添加 -->
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2024 櫻花壽司店</p>
+  </footer>
+  <script>
+    const menuItems = [
+      { name: "加州卷", price: "RM 12.00", image: "california.jpg" },
+      { name: "三文魚握壽司", price: "RM 8.00", image: "salmon.jpg" },
+      { name: "金槍魚生魚片", price: "RM 18.00", image: "tuna.jpg" },
+      { name: "蔬菜天婦羅", price: "RM 9.00", image: "tempura.jpg" },
+      { name: "味增湯", price: "RM 4.00", image: "miso.jpg" },
+      { name: "綠茶雪糕", price: "RM 5.00", image: "greentea.jpg" }
+    ];
+
+    const menuContainer = document.getElementById('menu');
+    const slider = document.querySelector('.slider');
+    let currentSlide = 0;
+
+    // 添加菜單項目和輪播圖片
+    menuItems.forEach((item, index) => {
+      // 添加菜單項目
+      const menuItem = document.createElement('div');
+      menuItem.className = 'menu-item';
+      menuItem.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <h3>${item.name}</h3>
+                <p>${item.price}</p>
+            `;
+      menuContainer.appendChild(menuItem);
+
+      // 添加輪播圖片
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.innerHTML = `<img src="${item.image}" alt="${item.name}">`;
+      slider.appendChild(slide);
+    });
+
+    // 輪播功能
+    function showSlide(n) {
+      currentSlide = (n + menuItems.length) % menuItems.length;
+      slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    document.querySelector('.prev').addEventListener('click', () => showSlide(currentSlide - 1));
+    document.querySelector('.next').addEventListener('click', () => showSlide(currentSlide + 1));
+
+    // 自動輪播
+    setInterval(() => showSlide(currentSlide + 1), 5000);
+  </script>
+</body>
+
+</html>
